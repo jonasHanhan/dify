@@ -175,6 +175,41 @@ class PluginConfig(BaseSettings):
         default=15728640 * 12,
     )
 
+    PLUGIN_REGISTRY_MODE: str = Field(
+        description="Plugin registry mode: daemon or nacos",
+        default="daemon",
+    )
+
+    NACOS_PLUGIN_SERVER_ADDR: str | None = Field(
+        description="Nacos server address for plugin discovery",
+        default=None,
+    )
+
+    NACOS_PLUGIN_NAMESPACE: str | None = Field(
+        description="Nacos namespace for plugin discovery",
+        default=None,
+    )
+
+    NACOS_PLUGIN_USERNAME: str | None = Field(
+        description="Nacos username for plugin discovery",
+        default=None,
+    )
+
+    NACOS_PLUGIN_PASSWORD: str | None = Field(
+        description="Nacos password for plugin discovery",
+        default=None,
+    )
+
+    NACOS_PLUGIN_GROUP: str = Field(
+        description="Nacos group for plugin discovery",
+        default="DEFAULT_GROUP",
+    )
+
+    NACOS_PLUGIN_SERVICE_NAME: str = Field(
+        description="Nacos service name of plugin daemon",
+        default="dify-plugin-daemon",
+    )
+
 
 class MarketplaceConfig(BaseSettings):
     """

@@ -3,11 +3,15 @@ from typing import Any
 
 from werkzeug import Request
 
+from configs import dify_config
 from core.plugin.entities.plugin_daemon import PluginOAuthAuthorizationUrlResponse, PluginOAuthCredentialsResponse
 from core.plugin.impl.base import BasePluginClient
+from core.plugin.impl.nacos_client import NacosPluginClient
+
+BaseClient = NacosPluginClient if dify_config.PLUGIN_REGISTRY_MODE == "nacos" else BasePluginClient
 
 
-class OAuthHandler(BasePluginClient):
+class OAuthHandler(BaseClient):
     def get_authorization_url(
         self,
         tenant_id: str,
