@@ -1,15 +1,19 @@
 from collections.abc import Generator
 from typing import Any, Optional
 
+from configs import dify_config
 from core.agent.entities import AgentInvokeMessage
 from core.plugin.entities.plugin import GenericProviderID
 from core.plugin.entities.plugin_daemon import (
     PluginAgentProviderEntity,
 )
 from core.plugin.impl.base import BasePluginClient
+from core.plugin.impl.nacos_client import NacosPluginClient
+
+BaseClient = NacosPluginClient if dify_config.PLUGIN_REGISTRY_MODE == "nacos" else BasePluginClient
 
 
-class PluginAgentClient(BasePluginClient):
+class PluginAgentClient(BaseClient):
     def fetch_agent_strategy_providers(self, tenant_id: str) -> list[PluginAgentProviderEntity]:
         """
         Fetch agent providers for the given tenant.

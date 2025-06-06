@@ -3,13 +3,17 @@ from typing import Any, Optional
 
 from pydantic import BaseModel
 
+from configs import dify_config
 from core.plugin.entities.plugin import GenericProviderID, ToolProviderID
 from core.plugin.entities.plugin_daemon import PluginBasicBooleanResponse, PluginToolProviderEntity
 from core.plugin.impl.base import BasePluginClient
+from core.plugin.impl.nacos_client import NacosPluginClient
+
+BaseClient = NacosPluginClient if dify_config.PLUGIN_REGISTRY_MODE == "nacos" else BasePluginClient
 from core.tools.entities.tool_entities import ToolInvokeMessage, ToolParameter
 
 
-class PluginToolManager(BasePluginClient):
+class PluginToolManager(BaseClient):
     def fetch_tool_providers(self, tenant_id: str) -> list[PluginToolProviderEntity]:
         """
         Fetch tool providers for the given tenant.

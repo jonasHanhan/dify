@@ -8,6 +8,7 @@ from core.model_runtime.entities.model_entities import AIModelEntity
 from core.model_runtime.entities.rerank_entities import RerankResult
 from core.model_runtime.entities.text_embedding_entities import TextEmbeddingResult
 from core.model_runtime.utils.encoders import jsonable_encoder
+from configs import dify_config
 from core.plugin.entities.plugin_daemon import (
     PluginBasicBooleanResponse,
     PluginDaemonInnerError,
@@ -19,9 +20,12 @@ from core.plugin.entities.plugin_daemon import (
     PluginVoicesResponse,
 )
 from core.plugin.impl.base import BasePluginClient
+from core.plugin.impl.nacos_client import NacosPluginClient
+
+BaseClient = NacosPluginClient if dify_config.PLUGIN_REGISTRY_MODE == "nacos" else BasePluginClient
 
 
-class PluginModelClient(BasePluginClient):
+class PluginModelClient(BaseClient):
     def fetch_model_providers(self, tenant_id: str) -> Sequence[PluginModelProviderEntity]:
         """
         Fetch model providers for the given tenant.

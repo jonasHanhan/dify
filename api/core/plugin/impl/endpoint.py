@@ -1,8 +1,12 @@
+from configs import dify_config
 from core.plugin.entities.endpoint import EndpointEntityWithInstance
 from core.plugin.impl.base import BasePluginClient
+from core.plugin.impl.nacos_client import NacosPluginClient
+
+BaseClient = NacosPluginClient if dify_config.PLUGIN_REGISTRY_MODE == "nacos" else BasePluginClient
 
 
-class PluginEndpointClient(BasePluginClient):
+class PluginEndpointClient(BaseClient):
     def create_endpoint(
         self, tenant_id: str, user_id: str, plugin_unique_identifier: str, name: str, settings: dict
     ) -> bool:
